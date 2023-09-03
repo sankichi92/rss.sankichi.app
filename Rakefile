@@ -7,6 +7,7 @@ require 'rubocop/rake_task'
 RuboCop::RakeTask.new
 
 TARGETS = %w[
+  dist/index.html
   dist/cao_space_policy.xml
   dist/mext_space_wg.xml
 ].freeze
@@ -15,6 +16,12 @@ require 'rake/clean'
 CLOBBER.add(*TARGETS)
 
 multitask default: TARGETS
+
+file 'dist/index.html' do |t|
+  require 'commonmarker'
+  html = Commonmarker.to_html(File.read('README.md'))
+  File.write(t.name, html)
+end
 
 file 'dist/cao_space_policy.xml' do |t|
   require_relative 'lib/cao_space_policy'

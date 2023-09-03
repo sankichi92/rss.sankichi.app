@@ -3,6 +3,8 @@ GEM
   specs:
     ast (2.4.2)
     base64 (0.1.1)
+    commonmarker (1.0.0.pre10-arm64-darwin)
+    commonmarker (1.0.0.pre10-x86_64-linux)
     diff-lcs (1.5.0)
     json (2.6.3)
     language_server-protocol (3.17.0.3)
@@ -69,6 +71,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  commonmarker (~> 1.0.0.pre10)
   nokogiri
   rake
   rspec
