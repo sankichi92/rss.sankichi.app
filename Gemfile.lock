@@ -5,7 +5,6 @@ GEM
     base64 (0.1.1)
     commonmarker (1.0.0.pre10-arm64-darwin)
     commonmarker (1.0.0.pre10-x86_64-linux)
-    diff-lcs (1.5.0)
     json (2.6.3)
     language_server-protocol (3.17.0.3)
     nokogiri (1.15.4-arm64-darwin)
@@ -21,19 +20,6 @@ GEM
     rake (13.0.6)
     regexp_parser (2.8.1)
     rexml (3.2.6)
-    rspec (3.12.0)
-      rspec-core (~> 3.12.0)
-      rspec-expectations (~> 3.12.0)
-      rspec-mocks (~> 3.12.0)
-    rspec-core (3.12.2)
-      rspec-support (~> 3.12.0)
-    rspec-expectations (3.12.3)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.12.0)
-    rspec-mocks (3.12.6)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.12.0)
-    rspec-support (3.12.1)
     rss (0.3.0)
       rexml
     rubocop (1.56.2)
@@ -50,16 +36,8 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.29.0)
       parser (>= 3.2.1.0)
-    rubocop-capybara (2.18.0)
-      rubocop (~> 1.41)
-    rubocop-factory_bot (2.23.1)
-      rubocop (~> 1.33)
     rubocop-rake (0.6.0)
       rubocop (~> 1.0)
-    rubocop-rspec (2.23.2)
-      rubocop (~> 1.33)
-      rubocop-capybara (~> 2.17)
-      rubocop-factory_bot (~> 2.22)
     ruby-progressbar (1.13.0)
     unicode-display_width (2.4.2)
     wareki (1.1.0)
@@ -74,11 +52,9 @@ DEPENDENCIES
   commonmarker (~> 1.0.0.pre10)
   nokogiri
   rake
-  rspec
   rss
   rubocop
   rubocop-rake
-  rubocop-rspec
   wareki
 
 BUNDLED WITH
