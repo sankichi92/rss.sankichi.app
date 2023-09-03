@@ -15,7 +15,7 @@ CLOBBER.add(*TARGETS)
 
 multitask default: TARGETS
 
-file 'dist/index.html' do |t|
+file 'dist/index.html' => 'README.md' do |t|
   require 'commonmarker'
   html = Commonmarker.to_html(File.read('README.md'))
   File.write(t.name, html)
