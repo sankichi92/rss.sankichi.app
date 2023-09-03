@@ -60,6 +60,9 @@ GEM
       rubocop-factory_bot (~> 2.22)
     ruby-progressbar (1.13.0)
     unicode-display_width (2.4.2)
+    wareki (1.1.0)
+      ya_kansuji (> 0.0.9, < 2.0.0)
+    ya_kansuji (0.2.0)
 
 PLATFORMS
   arm64-darwin-22
@@ -73,6 +76,7 @@ DEPENDENCIES
   rubocop
   rubocop-rake
   rubocop-rspec
+  wareki
 
 BUNDLED WITH
    2.4.17

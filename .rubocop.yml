@@ -5,9 +5,6 @@ require:
 AllCops:
   NewCops: enable
 
-Lint/MissingSuper:
-  AllowedParentClasses: [Feed]
-
 Style/Documentation:
   Enabled: false
 

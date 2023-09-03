@@ -16,6 +16,7 @@ class CAOSpacePolicy < Feed
   attr_reader :doc
 
   def initialize(html: URI(self.class.link).open)
+    super()
     @doc = Nokogiri::HTML.parse(html)
   end
 
@@ -23,8 +24,10 @@ class CAOSpacePolicy < Feed
     doc.css('#mainContents .topicsList').map do |topic_element| # 最近のトピックス
       title_anchor = topic_element.at_css('dd a').dup
       title_anchor.css('span').unlink # removes the "New!" label
+      title = title_anchor.content
 
-      link = URI.join(self.class.link, title_anchor.attribute('href').value.strip)
+      link = URI.join(self.class.link, title_anchor['href'].strip)
+      logger.debug("[#{title}](#{link})")
 
       description = if link.to_s == 'https://www8.cao.go.jp/space/minister/danwa.html'
                       nil # No item-specific content on this page
@@ -32,12 +35,9 @@ class CAOSpacePolicy < Feed
                       extract_main_contents(link.open)
                     end
 
-      Feed::Item.new(
-        title: title_anchor.content,
-        description:,
-        link:,
-        date: Time.strptime(topic_element.at_css('dt').content, '%Y年%m月%d日'),
-      )
+      date = Time.strptime(topic_element.at_css('dt').content, '%Y年%m月%d日')
+
+      Feed::Item.new(title:, description:, link:, date:)
     end
   end
 

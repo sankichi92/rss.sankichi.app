@@ -1,10 +1,18 @@
 # frozen_string_literal: true
 
+require 'logger'
+
 require 'rss'
 
 class Feed
   class << self
     attr_accessor :title, :description, :link, :language
+  end
+
+  attr_reader :logger
+
+  def initialize(logger: Logger.new($stdout, progname: self.class.name))
+    @logger = logger
   end
 
   def items
