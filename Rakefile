@@ -6,6 +6,7 @@ RuboCop::RakeTask.new
 TARGETS = %w[
   dist/index.html
   dist/cao_space_policy.xml
+  dist/made_in_abyss.xml
   dist/mext_space_wg.xml
 ].freeze
 
@@ -23,6 +24,11 @@ end
 file 'dist/cao_space_policy.xml' do |t|
   require_relative 'lib/cao_space_policy'
   File.write(t.name, CAOSpacePolicy.new.to_rss)
+end
+
+file 'dist/made_in_abyss.xml' do |t|
+  require_relative 'lib/made_in_abyss'
+  File.write(t.name, MadeInAbyss.new.to_rss)
 end
 
 file 'dist/mext_space_wg.xml' do |t|
