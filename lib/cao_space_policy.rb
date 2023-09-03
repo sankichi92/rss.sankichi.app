@@ -8,44 +8,45 @@ require 'nokogiri'
 require_relative 'feed'
 
 class CAOSpacePolicy < Feed
-  title '内閣府 宇宙政策'
-  description '内閣府 宇宙政策 最近のトピックス'
-  link 'https://www8.cao.go.jp/space/index.html'
-  language 'ja'
+  self.title = '内閣府 宇宙政策'
+  self.description = '内閣府 宇宙政策 最近のトピックス'
+  self.link = 'https://www8.cao.go.jp/space/index.html'
+  self.language = 'ja'
 
   attr_reader :doc
 
-  def initialize(html: URI(link).open)
+  def initialize(html: URI(self.class.link).open)
     @doc = Nokogiri::HTML.parse(html)
   end
 
   def items
     doc.css('#mainContents .topicsList').map do |topic_element| # 最近のトピックス
       title_anchor = topic_element.at_css('dd a').dup
-      title_anchor.css('span').unlink # remove the "New!" label
+      title_anchor.css('span').unlink # removes the "New!" label
 
-      Item.new(
-        link: URI.join(link, title_anchor.attribute('href').value.strip).to_s,
+      link = URI.join(self.class.link, title_anchor.attribute('href').value.strip)
+
+      description = if link.to_s == 'https://www8.cao.go.jp/space/minister/danwa.html'
+                      nil # No item-specific content on this page
+                    else
+                      extract_main_contents(link.open)
+                    end
+
+      Feed::Item.new(
         title: title_anchor.content,
+        description:,
+        link:,
         date: Time.strptime(topic_element.at_css('dt').content, '%Y年%m月%d日'),
       )
     end
   end
 
-  class Item < Feed::Item
-    attr_reader :doc
+  private
 
-    def initialize(title:, link:, date:, html: URI(link).open)
-      super(title:, link:, date:)
-      @doc = Nokogiri::HTML.parse(html)
-    end
-
-    def description
-      return if link == 'https://www8.cao.go.jp/space/minister/danwa.html' # no item-specific content on this page
-
-      main_contents = doc.at_css('#mainContents').dup
-      main_contents.css('.pageTop').unlink
-      main_contents.inner_html.strip
-    end
+  def extract_main_contents(sub_page_html)
+    item_doc = Nokogiri::HTML.parse(sub_page_html)
+    main_contents = item_doc.at_css('#mainContents').dup
+    main_contents.css('.pageTop').unlink # removes "このページの先頭へ"
+    main_contents.inner_html.strip
   end
 end

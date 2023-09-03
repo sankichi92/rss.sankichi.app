@@ -4,46 +4,8 @@ require 'rss'
 
 class Feed
   class << self
-    def title(title = nil)
-      if title.nil?
-        @title
-      else
-        @title = title
-      end
-    end
-
-    def description(description = nil)
-      if description.nil?
-        @description
-      else
-        @description = description
-      end
-    end
-
-    def link(link = nil)
-      if link.nil?
-        @link
-      else
-        @link = link
-      end
-    end
-
-    def language(language = nil)
-      if language.nil?
-        @language
-      else
-        @language = language
-      end
-    end
+    attr_accessor :title, :description, :link, :language
   end
-
-  def title = self.class.title
-
-  def description = self.class.description
-
-  def link = self.class.link
-
-  def language = self.class.language
 
   def items
     raise NotImplementedError
@@ -51,17 +13,17 @@ class Feed
 
   def to_rss
     RSS::Maker.make('2.0') do |maker|
-      maker.channel.title = title
-      maker.channel.description = description
-      maker.channel.link = link
-      maker.channel.language = language
+      maker.channel.title = self.class.title
+      maker.channel.description = self.class.description
+      maker.channel.link = self.class.link
+      maker.channel.language = self.class.language if self.class.language
 
       items.each do |item|
         new_item = maker.items.new_item
-        new_item.title = item.title
-        new_item.description = item.description
-        new_item.link = item.link
-        new_item.date = item.date
+        new_item.title = item.title if item.title
+        new_item.description = item.description if item.description
+        new_item.link = item.link if item.link
+        new_item.date = item.date if item.date
       end
     end
   end
@@ -70,6 +32,8 @@ class Feed
     attr_reader :title, :description, :link, :date
 
     def initialize(title: nil, description: nil, link: nil, date: nil)
+      raise ArgumentError 'Either title or description is required' if title.nil? && description.nil?
+
       @title = title
       @description = description
       @link = link
