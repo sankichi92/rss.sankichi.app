@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require 'open-uri'
 require 'time'
 
-require 'nokogiri'
 require 'wareki/date'
 
 require_relative 'feed'
@@ -13,13 +11,6 @@ class MEXTSpaceWG < Feed
   self.description = '文部科学省 宇宙開発利用部会の最新の配布資料（小委員会含む）'
   self.link = 'https://www.mext.go.jp/b_menu/shingi/gijyutu/gijyutu2/059/index.htm'
   self.language = 'ja'
-
-  attr_reader :doc
-
-  def initialize(html: URI(self.class.link).open)
-    super()
-    @doc = Nokogiri::HTML.parse(html)
-  end
 
   def items
     items = []

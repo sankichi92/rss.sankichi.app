@@ -23,15 +23,15 @@ end
 
 file 'dist/cao_space_policy.xml' do |t|
   require_relative 'lib/cao_space_policy'
-  File.write(t.name, CAOSpacePolicy.new.to_rss)
+  File.write(t.name, CAOSpacePolicy.build.to_rss)
 end
 
 file 'dist/made_in_abyss.xml' do |t|
   require_relative 'lib/made_in_abyss'
-  File.write(t.name, MadeInAbyss.new.to_rss)
+  File.write(t.name, MadeInAbyss.build.to_rss)
 end
 
 file 'dist/mext_space_wg.xml' do |t|
   require_relative 'lib/mext_space_wg'
-  File.write(t.name, MEXTSpaceWG.new.to_rss)
+  File.write(t.name, MEXTSpaceWG.build.to_rss)
 end

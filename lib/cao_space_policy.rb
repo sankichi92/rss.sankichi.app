@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require 'open-uri'
 require 'time'
-
-require 'nokogiri'
 
 require_relative 'feed'
 
@@ -12,13 +9,6 @@ class CAOSpacePolicy < Feed
   self.description = '内閣府 宇宙政策 最近のトピックス'
   self.link = 'https://www8.cao.go.jp/space/index.html'
   self.language = 'ja'
-
-  attr_reader :doc
-
-  def initialize(html: URI(self.class.link).open)
-    super()
-    @doc = Nokogiri::HTML.parse(html)
-  end
 
   def items
     doc.css('#mainContents .topicsList').map do |topic_element| # 最近のトピックス

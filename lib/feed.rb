@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 require 'logger'
+require 'open-uri'
 
+require 'nokogiri'
 require 'rss'
 
 class Feed
@@ -9,10 +11,17 @@ class Feed
     attr_accessor :title, :description, :link, :language
   end
 
-  attr_reader :logger
+  attr_reader :doc, :logger
 
-  def initialize(logger: Logger.new($stdout, progname: self.class.name))
+  def initialize(doc, logger: Logger.new($stdout, progname: self.class.name))
+    @doc = doc
     @logger = logger
+  end
+
+  def self.build
+    html = URI(link).open
+    doc = Nokogiri::HTML.parse(html)
+    new(doc)
   end
 
   def items
