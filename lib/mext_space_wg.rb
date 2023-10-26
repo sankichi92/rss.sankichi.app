@@ -27,8 +27,10 @@ class MEXTSpaceWG < Feed
   private
 
   def extract_item(doc)
-    link = URI.join(self.class.link, doc.at_xpath("//a[text()='配付資料']")['href'])
+    anchor_element = doc.at_xpath("//a[text()='配付資料']")
+    anchor_element ||= doc.at_xpath("//a[text()='議事要旨']")
 
+    link = URI.join(self.class.link, anchor_element['href'])
     item_doc = Nokogiri::HTML.parse(link.open)
 
     title = item_doc.at_css('#contentsTitle h1').content
