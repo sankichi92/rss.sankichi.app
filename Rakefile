@@ -29,3 +29,26 @@ feed_dists.each do |f|
     File.write(t.name, klass.build.to_rss)
   end
 end
+
+desc 'Build README.md'
+task :readme do
+  klass_to_uri = feed_dists.to_h do |f|
+    klass = File.basename(f, '.xml').camelize.constantize
+    uri = URI.join('https://rss.sankichi.app/', File.basename(f))
+    [klass, uri]
+  end
+
+  content = <<~README
+    # rss.sankichi.app
+
+    Generate RSS feeds by scraping websites without native RSS support.
+
+    ## Feeds
+
+    Origin | Feed URL
+    -- | --
+    #{klass_to_uri.map { |klass, uri| "[#{klass.title}](#{klass.link}) | #{uri}" }.join("\n")}
+  README
+
+  File.write('README.md', content)
+end
