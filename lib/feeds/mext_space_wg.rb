@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-require 'time'
-
 require 'wareki/date'
 
-require_relative 'feed'
+require_relative '../feed'
 
-class MEXTSpaceWG < Feed
+class MextSpaceWg < Feed
   self.title = '宇宙開発利用部会'
   self.description = '文部科学省 宇宙開発利用部会の最新の配布資料（小委員会含む）'
   self.link = 'https://www.mext.go.jp/b_menu/shingi/gijyutu/gijyutu2/059/index.htm'

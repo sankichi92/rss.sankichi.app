@@ -3,17 +3,17 @@
 require 'rubocop/rake_task'
 RuboCop::RakeTask.new
 
-TARGETS = %w[
-  dist/index.html
-  dist/cao_space_policy.xml
-  dist/made_in_abyss.xml
-  dist/mext_space_wg.xml
-].freeze
+feed_scripts = Dir['lib/feeds/*.rb']
+feed_scripts.each do |f|
+  require_relative f
+end
+
+feed_dists = feed_scripts.map { |f| File.join('dist', "#{File.basename(f, '.rb')}.xml") }
 
 require 'rake/clean'
-CLOBBER.add(*TARGETS)
+CLOBBER.add(['dist/index.html', *feed_dists])
 
-multitask default: TARGETS
+multitask default: ['dist/index.html', *feed_dists]
 
 file 'dist/index.html' => 'README.md' do |t|
   require 'commonmarker'
@@ -21,17 +21,11 @@ file 'dist/index.html' => 'README.md' do |t|
   File.write(t.name, html)
 end
 
-file 'dist/cao_space_policy.xml' do |t|
-  require_relative 'lib/cao_space_policy'
-  File.write(t.name, CAOSpacePolicy.build.to_rss)
-end
+require 'active_support/core_ext/string/inflections'
 
-file 'dist/made_in_abyss.xml' do |t|
-  require_relative 'lib/made_in_abyss'
-  File.write(t.name, MadeInAbyss.build.to_rss)
-end
-
-file 'dist/mext_space_wg.xml' do |t|
-  require_relative 'lib/mext_space_wg'
-  File.write(t.name, MEXTSpaceWG.build.to_rss)
+feed_dists.each do |f|
+  file f do |t|
+    klass = File.basename(f, '.xml').camelize.constantize
+    File.write(t.name, klass.build.to_rss)
+  end
 end

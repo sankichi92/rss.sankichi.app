@@ -2,6 +2,7 @@
 
 require 'logger'
 require 'open-uri'
+require 'time'
 
 require 'nokogiri'
 require 'rss'

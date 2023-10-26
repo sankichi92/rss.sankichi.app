@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require 'time'
-
-require_relative 'feed'
+require_relative '../feed'
 
 class MadeInAbyss < Feed
   self.title = 'メイドインアビス'

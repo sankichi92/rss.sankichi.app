@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require 'time'
+require_relative '../feed'
 
-require_relative 'feed'
-
-class CAOSpacePolicy < Feed
+class CaoSpacePolicy < Feed
   self.title = '内閣府 宇宙政策'
   self.description = '内閣府 宇宙政策 最近のトピックス'
   self.link = 'https://www8.cao.go.jp/space/index.html'

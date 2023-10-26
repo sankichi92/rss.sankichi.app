@@ -2,6 +2,7 @@
 
 source 'https://rubygems.org'
 
+gem 'activesupport'
 gem 'commonmarker', '~> 1.0.0.pre10'
 gem 'nokogiri'
 gem 'rake'
