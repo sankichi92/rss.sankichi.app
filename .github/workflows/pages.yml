@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: ruby/setup-ruby@v1
         with:
@@ -34,10 +34,6 @@ jobs:
 
       - name: Generate feeds
         run: bundle exec rake
-        env:
-          TZ: Asia/Tokyo
-
-      - uses: actions/configure-pages@v3
 
       - uses: actions/upload-pages-artifact@v2
         with:
