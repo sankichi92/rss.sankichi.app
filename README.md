@@ -6,7 +6,6 @@ Generate RSS feeds by scraping websites without native RSS support.
 
 Origin | Feed URL
 -- | --
-[有明テニスの森公園イベント](https://www.tptc.co.jp/park/02_03/event) | https://rss.sankichi.app/ariake_tennis_events.xml
 [内閣府 宇宙政策](https://www8.cao.go.jp/space/index.html) | https://rss.sankichi.app/cao_space_policy.xml
 [JAXA 第一宇宙技術部門 Earth-graphy](https://earth.jaxa.jp/ja/earthview/index.html) | https://rss.sankichi.app/earth_graphy.xml
 [野尻抱介の「ぱられる・シンギュラリティ」](https://kemur.jp/tag/%e9%87%8e%e5%b0%bb%e6%8a%b1%e4%bb%8b) | https://rss.sankichi.app/kemur_nojiri_h.xml
