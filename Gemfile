@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 
 gem 'activesupport'
-gem 'commonmarker', '~> 1.0.0.pre10'
+gem 'commonmarker'
 gem 'nokogiri'
 gem 'rake'
 gem 'rss'

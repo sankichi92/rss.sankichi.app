@@ -13,35 +13,36 @@ GEM
       tzinfo (~> 2.0)
     ast (2.4.2)
     base64 (0.2.0)
-    bigdecimal (3.1.4)
-    commonmarker (1.0.0.pre11-arm64-darwin)
-    commonmarker (1.0.0.pre11-x86_64-linux)
+    bigdecimal (3.1.5)
+    commonmarker (1.0.3)
+      rb_sys (~> 0.9)
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
     drb (2.2.0)
       ruby2_keywords
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
-    json (2.6.3)
+    json (2.7.1)
     language_server-protocol (3.17.0.3)
     minitest (5.20.0)
     mutex_m (0.2.0)
-    nokogiri (1.15.5-arm64-darwin)
+    nokogiri (1.16.0-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.15.5-x86_64-linux)
+    nokogiri (1.16.0-x86_64-linux)
       racc (~> 1.4)
-    parallel (1.23.0)
+    parallel (1.24.0)
     parser (3.2.2.4)
       ast (~> 2.4.1)
       racc
     racc (1.7.3)
     rainbow (3.1.1)
     rake (13.1.0)
-    regexp_parser (2.8.2)
+    rb_sys (0.9.85)
+    regexp_parser (2.8.3)
     rexml (3.2.6)
     rss (0.3.0)
       rexml
-    rubocop (1.57.2)
+    rubocop (1.59.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
@@ -49,7 +50,7 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml (>= 3.2.5, < 4.0)
-      rubocop-ast (>= 1.28.1, < 2.0)
+      rubocop-ast (>= 1.30.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.30.0)
@@ -67,11 +68,12 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  arm64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
   activesupport
-  commonmarker (~> 1.0.0.pre10)
+  commonmarker
   nokogiri
   rake
   rss
@@ -80,4 +82,4 @@ DEPENDENCIES
   wareki
 
 BUNDLED WITH
-   2.4.17
+   2.5.3
