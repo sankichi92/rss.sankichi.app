@@ -3,13 +3,11 @@ name: GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: ["main"]
   schedule:
     - cron: "0 0,4,8,12 * * *" # JST 9:00, 13:00, 17:00, 21:00
   workflow_dispatch:
-
-permissions:
-  pages: write
-  id-token: write
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
@@ -18,7 +16,32 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4.1.4
+
+      - uses: ruby/setup-ruby@v1.175.1
+        with:
+          bundler-cache: true
+
+      - name: Generate feeds
+        run: bundle exec rake
+
+      - uses: actions/upload-pages-artifact@v3.0.1
+        with:
+          path: dist
+
   deploy:
+    needs: build
+
+    if: github.ref_name	== 'main'
+
+    permissions:
+      pages: write
+      id-token: write
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -26,19 +49,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-
-      - name: Generate feeds
-        run: bundle exec rake
-
-      - uses: actions/upload-pages-artifact@v2
-        with:
-          path: dist
-
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4.0.5
