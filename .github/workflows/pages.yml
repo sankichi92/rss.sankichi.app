@@ -20,16 +20,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.4
 
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1.175.1
         with:
           bundler-cache: true
 
       - name: Generate feeds
         run: bundle exec rake
 
-      - uses: actions/upload-pages-artifact@v2
+      - uses: actions/upload-pages-artifact@v3.0.1
         with:
           path: dist
 
@@ -51,4 +51,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4.0.5
