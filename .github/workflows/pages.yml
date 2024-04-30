@@ -3,13 +3,11 @@ name: GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: ["main"]
   schedule:
     - cron: "0 0,4,8,12 * * *" # JST 9:00, 13:00, 17:00, 21:00
   workflow_dispatch:
-
-permissions:
-  pages: write
-  id-token: write
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
@@ -18,11 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -39,6 +33,22 @@ jobs:
         with:
           path: dist
 
+  deploy:
+    needs: build
+
+    if: github.ref_name	== 'main'
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
