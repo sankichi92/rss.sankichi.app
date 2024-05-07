@@ -46,24 +46,26 @@ class Feed
         new_item.link = item.link if item.link
         new_item.date = item.date if item.date
 
-        next unless item.enclosure_url
+        if item.enclosure_url
+          enclosure_uri = URI(item.enclosure_url)
+          http = Net::HTTP.new(enclosure_uri.host, enclosure_uri.port)
+          http.use_ssl = enclosure_uri.scheme == 'https'
+          response = http.head(enclosure_uri.path)
 
-        enclosure_uri = URI(item.enclosure_url)
-        http = Net::HTTP.new(enclosure_uri.host, enclosure_uri.port)
-        http.use_ssl = enclosure_uri.scheme == 'https'
-        response = http.head(enclosure_uri.path)
+          new_item.enclosure.url = item.enclosure_url
+          new_item.enclosure.type = response['Content-Type']
+          new_item.enclosure.length = response['Content-Length']
+        end
 
-        new_item.enclosure.url = item.enclosure_url
-        new_item.enclosure.type = response['Content-Type']
-        new_item.enclosure.length = response['Content-Length']
+        new_item.itunes_duration = item.itunes_duration if item.itunes_duration
       end
     end
   end
 
   class Item
-    attr_reader :title, :description, :link, :date, :enclosure_url
+    attr_reader :title, :description, :link, :date, :enclosure_url, :itunes_duration
 
-    def initialize(title: nil, description: nil, link: nil, date: nil, enclosure_url: nil)
+    def initialize(title: nil, description: nil, link: nil, date: nil, enclosure_url: nil, itunes_duration: nil)
       raise ArgumentError 'Either title or description is required' if title.nil? && description.nil?
 
       @title = title
@@ -71,6 +73,7 @@ class Feed
       @link = link
       @date = date
       @enclosure_url = enclosure_url
+      @itunes_duration = itunes_duration
     end
   end
 end

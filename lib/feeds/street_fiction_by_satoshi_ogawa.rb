@@ -2,6 +2,9 @@
 
 require 'json'
 
+require 'active_support'
+require 'active_support/duration'
+
 require_relative '../feed'
 
 class StreetFictionBySatoshiOgawa < Feed
@@ -23,6 +26,7 @@ class StreetFictionBySatoshiOgawa < Feed
         link: anchor['href'],
         date: Time.parse(json_ld[0]['datePublished']),
         enclosure_url: json_ld[0]['audio'][0]['contentUrl'],
+        itunes_duration: ActiveSupport::Duration.parse(json_ld[0]['audio'][0]['duration']).to_i.to_s,
       )
     end
   end
