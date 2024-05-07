@@ -14,3 +14,4 @@ Origin | Feed URL
 [新刊めったくたガイド: 大森望](https://www.webdoku.jp/mettakuta/omori_nozomi/) | https://rss.sankichi.app/mettakuta_omori_nozomi.xml
 [宇宙開発利用部会](https://www.mext.go.jp/b_menu/shingi/gijyutu/gijyutu2/059/index.htm) | https://rss.sankichi.app/mext_space_wg.xml
 [S-NET NEWS](https://s-net.space/news) | https://rss.sankichi.app/s_net_news.xml
+[Street Fiction by SATOSHI OGAWA](https://audee.jp/program/show/300005062) | https://rss.sankichi.app/street_fiction_by_satoshi_ogawa.xml
