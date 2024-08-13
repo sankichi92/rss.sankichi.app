@@ -16,18 +16,32 @@ class StreetFictionBySatoshiOgawa < Feed
   self.itunes_image = 'https://pms-next-prod-api-program.s3.ap-northeast-1.amazonaws.com/image/pglogo/6305868d-37a2-421d-8ce4-4d32154d9853_au_large.jpg'
 
   def items
-    doc.css('#content_tab_voice .box-article-item a').map do |anchor|
+    doc.css('#content_tab_voice .box-article-item a').flat_map do |anchor|
       sub_doc = Nokogiri::HTML.parse(URI(anchor['href']).open)
       json_ld = JSON.parse(sub_doc.xpath("(//script[@type='application/ld+json'])[2]").text.strip)
+      podcast_episode = json_ld.find { |obj| obj['@type'] == 'PodcastEpisode' }
 
-      Feed::Item.new(
-        title: anchor.at_css('p').content.strip,
-        description: sub_doc.at_css('.txt-detail').content.strip,
-        link: anchor['href'],
-        date: Time.parse(json_ld[0]['datePublished']),
-        enclosure_url: json_ld[0]['audio'][0]['contentUrl'],
-        itunes_duration: ActiveSupport::Duration.parse(json_ld[0]['audio'][0]['duration']).to_i.to_s,
-      )
+      if podcast_episode['audio'].size == 1
+        Feed::Item.new(
+          title: podcast_episode['name'].split(' | ').first,
+          description: Nokogiri::HTML.parse(podcast_episode['description']).text.strip,
+          link: podcast_episode['url'],
+          date: Time.parse(podcast_episode['partOfSeries']['datePublished']),
+          enclosure_url: podcast_episode['audio'][0]['contentUrl'],
+          itunes_duration: ActiveSupport::Duration.parse(podcast_episode['audio'][0]['duration']).to_i.to_s,
+        )
+      else
+        podcast_episode['audio'].map do |audio|
+          Feed::Item.new(
+            title: [audio['name'], audio['description']].join(' '),
+            description: Nokogiri::HTML.parse(podcast_episode['description']).text.strip,
+            link: podcast_episode['url'],
+            date: Time.parse(audio['uploadDate']),
+            enclosure_url: audio['contentUrl'],
+            itunes_duration: ActiveSupport::Duration.parse(audio['duration']).to_i.to_s,
+          )
+        end
+      end
     end
   end
 end
