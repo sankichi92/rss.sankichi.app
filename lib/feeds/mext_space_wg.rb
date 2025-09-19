@@ -38,7 +38,8 @@ class MextSpaceWg < Feed
       element.css('.plugin').unlink # removes Adobe Acrobat Reader section
     end.inner_html.strip
 
-    date = Wareki::Date.parse(item_doc.at_css('#contentsMain > p').content.match(/.{2}\d+年\d+月\d+日/)[0]).to_time
+    wareki = item_doc.at_css('#contentsMain > p').content.tr('０-９', '0-9').match(/.{2}\d+年\d+月\d+日/)[0]
+    date = Wareki::Date.parse(wareki).to_time
 
     Feed::Item.new(title:, description:, link:, date:)
   end
