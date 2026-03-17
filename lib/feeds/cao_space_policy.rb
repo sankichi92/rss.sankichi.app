@@ -17,12 +17,7 @@ class CaoSpacePolicy < Feed
       link = URI.join(self.class.link, title_anchor['href'].strip)
       logger.debug("[#{title}](#{link})")
 
-      description = if link.to_s == 'https://www8.cao.go.jp/space/minister/danwa.html'
-                      nil # No item-specific content on this page
-                    else
-                      extract_main_contents(link.open)
-                    end
-
+      description = extract_item_description(link)
       date = Time.strptime(topic_element.at_css('dt').content, '%Y年%m月%d日')
 
       Feed::Item.new(title:, description:, link:, date:)
@@ -31,9 +26,19 @@ class CaoSpacePolicy < Feed
 
   private
 
+  def extract_item_description(link)
+    item_response = link.open
+    return nil unless item_response.content_type == 'text/html'
+
+    extract_main_contents(item_response.read)
+  end
+
   def extract_main_contents(sub_page_html)
     item_doc = Nokogiri::HTML.parse(sub_page_html)
-    main_contents = item_doc.at_css('#mainContents').dup
+    main_contents = item_doc.at_css('#mainContents')
+    return nil unless main_contents
+
+    main_contents = main_contents.dup
     main_contents.css('.pageTop').unlink # removes "このページの先頭へ"
     main_contents.inner_html.strip
   end
