@@ -15,7 +15,9 @@ class MextSpaceWg < Feed
     items << extract_item(doc)
 
     doc.css('#contentsMain > p a').each do |sub_wg_anchor|
-      sub_wg_doc = Nokogiri::HTML.parse(URI.join(self.class.link, sub_wg_anchor['href']).open)
+      sub_wg_doc = fetch_sub_wg_doc(sub_wg_anchor)
+      next unless sub_wg_doc
+
       items << extract_item(sub_wg_doc)
     end
 
@@ -23,6 +25,14 @@ class MextSpaceWg < Feed
   end
 
   private
+
+  def fetch_sub_wg_doc(anchor_element)
+    link = URI.join(self.class.link, anchor_element['href'])
+    Nokogiri::HTML.parse(link.open)
+  rescue OpenURI::HTTPError => e
+    logger.warn("Skipping #{anchor_element.content.strip} (#{link}): #{e.message}")
+    nil
+  end
 
   def extract_item(doc)
     anchor_element = doc.at_xpath("//a[text()='配付資料']")
