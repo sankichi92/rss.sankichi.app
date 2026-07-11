@@ -18,7 +18,8 @@ class CaoSpacePolicy < Feed
       logger.debug("[#{title}](#{link})")
 
       description = extract_item_description(link)
-      date = Time.strptime(topic_element.at_css('dt').content, '%Y年%m月%d日')
+      date_text = topic_element.at_css('dt').content.tr('０-９', '0-9')
+      date = Time.strptime(date_text, '%Y年%m月%d日')
 
       Feed::Item.new(title:, description:, link:, date:)
     end
